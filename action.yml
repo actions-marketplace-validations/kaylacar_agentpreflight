@@ -1,0 +1,35 @@
+name: 'agentpreflight'
+description: 'Pre-execution validation gate for AI agent tool calls. 13 rule sets covering security and workflow discipline. Zero runtime dependencies.'
+author: 'Kayla Cardillo / Tech Enrichment'
+branding:
+  icon: 'shield'
+  color: 'blue'
+
+inputs:
+  tool-calls-file:
+    description: 'Path to a JSON file containing the array of tool calls to validate.'
+    required: true
+  version:
+    description: 'agentpreflight npm version to install. Defaults to latest.'
+    required: false
+    default: 'latest'
+  node-version:
+    description: 'Node.js version to use. Defaults to 20.'
+    required: false
+    default: '20'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Install agentpreflight
+      shell: bash
+      run: npm install --no-save agentpreflight@${{ inputs.version }}
+
+    - name: Run preflight CI replay
+      shell: bash
+      run: node node_modules/agentpreflight/setup/replay-ci.mjs "${{ inputs.tool-calls-file }}"

@@ -362,6 +362,36 @@ const results = await validateAdapted(openclawPayload, 'openclaw', {
 
 ---
 
+## GitHub Action
+
+Use agentpreflight as a CI gate on pull requests. The action installs the npm package and replays a JSON file of planned tool calls; it exits non-zero if any rule fails.
+
+```yaml
+# .github/workflows/preflight.yml
+name: Preflight
+on:
+  pull_request:
+    paths: ['.preflight/tool-calls.json']
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: kaylacar/agentpreflight@v0.1.2
+        with:
+          tool-calls-file: '.preflight/tool-calls.json'
+```
+
+Inputs:
+- `tool-calls-file` (required): path to the JSON array of tool calls
+- `version` (optional, default `latest`): pin a specific agentpreflight version
+- `node-version` (optional, default `20`): override Node.js version
+
+A reference example workflow is at `.github/workflows/example-preflight.yml`.
+
+---
+
 ## Mandatory enforcement mode
 
 If you want agentpreflight to be a real control plane (not advisory), enforce one of these:

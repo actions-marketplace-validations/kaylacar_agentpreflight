@@ -1,0 +1,26 @@
+# Example workflow for downstream consumers.
+# Copy this file into your own repo at .github/workflows/preflight.yml,
+# adjust the path to your tool-calls JSON file, and commit.
+#
+# This file does NOT run inside the agentpreflight repo itself —
+# it ships as a reference example only.
+
+name: Preflight
+
+on:
+  pull_request:
+    paths:
+      - '.preflight/tool-calls.json'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate planned tool calls
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run agentpreflight
+        uses: kaylacar/agentpreflight@v0.1.2
+        with:
+          tool-calls-file: '.preflight/tool-calls.json'
