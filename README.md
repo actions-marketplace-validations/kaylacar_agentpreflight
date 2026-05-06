@@ -1,6 +1,10 @@
 # agentpreflight
 
-Pre-flight validation for AI tool calls. Catches mistakes before they execute.
+A pre-execution gate for AI tool calls. It sits between an agent's intent and what actually runs — intercepts each tool call, validates it against the real state of the system at the moment of the call, and blocks the operations that shouldn't happen.
+
+It is not a logger and not a post-hoc audit. The rules fire before the call is dispatched, so a bad `git push --force origin main`, a `Write` to a nonexistent parent directory, or a `git commit` with an empty stage never leaves the agent.
+
+Thirteen rule sets ship by default — six security (filesystem, git, secrets, environment, network, parallel) and seven workflow (naming, scope, editorial, session, time-estimation, prewrite, release). Rules are small, composable functions; adding your own takes a few lines. The core engine has zero runtime dependencies. Adapters cover Claude Code, Cursor, Codex, and Openclaw.
 
 Canonical repo: `https://github.com/kaylacar/agentpreflight`
 npm: `agentpreflight`

@@ -1,7 +1,7 @@
 {
   "name": "agentpreflight",
   "version": "0.1.2",
-  "description": "Pre-flight validation for tool calls that catches mistakes before execution",
+  "description": "Pre-flight validation SDK for AI tool calls. Intercepts tool calls, runs rule-based checks, blocks unsafe operations before execution. 13 rule sets, 0 runtime deps, tool-agnostic adapters.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
